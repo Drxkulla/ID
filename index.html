@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temro Group ID Maker</title>
+    <style>
+        h1 {
+            position: absolute;
+            left: 35%;
+        }
+        #logo {
+            position: absolute;
+            left: 35%;
+            top: 10%;
+        }
+        #container1 {
+            position: absolute;
+            border: 1px solid black;
+            height: 300px;
+            width: 200px;
+            top: 30%;
+            padding: 20px;
+            margin: 10px;
+        }
+        #container2 {
+            position: absolute;
+    left: 70%;
+    top: 40%;
+    width: 340px;
+    height: 230px;
+    background-color: #1da0f8; 
+    font-size: 20px;
+    font-weight: bold;
+   
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3); 
+    color: rgb(0, 0, 0);
+    padding: 15px; 
+        }
+        #Face {
+            position: absolute;
+            top: 26%;
+            left: 64%;
+            width: 3.18cm;
+            height: 3.55cm;
+            border-radius: 20px;
+        }
+        #CompanyName{
+    position: absolute;
+    top: 40%;
+    left: 5%;
+    }
+     #infoName{
+        position: absolute;
+    left: 5%;
+    top: 50%;
+    }
+     #iddName{
+    position: absolute;
+    left: 5%;
+    top: 60%;
+    } 
+    #jobName {
+    position: absolute;
+    left: 5%;
+    top: 70%;
+    
+}
+        #Log {
+            position: absolute;
+            left: 5%;
+            top: 5%;
+            width: 90px;
+            height: 80px;
+            border-radius: 3px;
+        }
+        #downloadBtn, #resetBtn {
+            margin-top: 20px;
+        }
+        #idCount {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #head{
+            position: absolute;
+            text-decoration: underline;
+            top: 1%;
+            left: 40%;
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+           font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+        footer{
+            position: absolute;
+            top: 90%;
+            left: 35%;
+        }
+    </style>
+</head>
+<body>
+<h1 id="heading">Temro Group ID Maker</h1>
+<img id="logo" src="logo.png">
+<div id="container1">
+    <label>Upload image:</label>
+    <input id="pic" type="file"><br>
+    <label>Enter company name:</label>
+    <input id="company" type="text"><br>
+    <label>Enter name and surname:</label>
+    <input id="info" type="text"><br>
+    <label>Enter Id:</label>
+    <input id="idd" type="text"><br>
+    <label>Enter occupation</label>
+    <input type="text" id="job"><br>
+    <button onclick="Pressme()">Submit</button>
+    <button id="downloadBtn">Download ID</button>
+    <button id="resetBtn">Reset Local Storage</button> 
+    <p id="idCount"></p>
+</div>
+<div id="container2">
+    <img id="Log" src="fix.png">
+    <img id="Face" src="">
+    <p id="head">TEMRO GROUP</p>
+    <p id="CompanyName">Company Name</p>
+    <p id="infoName">Employee info</p>
+    <p id="iddName">Employee id number</p>
+    <p id="jobName">Position</p>
+</div>
+
+
+<script>
+    const picInput = document.getElementById("pic");
+    const companyInput = document.getElementById("company");
+    const nameInput = document.getElementById("info");
+    const idInput = document.getElementById("idd");
+    const jobInput = document.getElementById("job");
+
+    const faceImage = document.getElementById("Face");
+    const companyDisplay = document.getElementById("CompanyName");
+    const nameDisplay = document.getElementById("infoName");
+    const idDisplay = document.getElementById("iddName");
+    const jobDisplay = document.getElementById("jobName");
+
+    const idCountDisplay = document.getElementById("idCount");
+
+    
+    let idCount = localStorage.getItem('idCount') ? parseInt(localStorage.getItem('idCount')) : 0;
+    idCountDisplay.textContent = `Business IDs created: ${idCount}`;
+
+    // Function to update the ID card
+    function Pressme() {
+        if (picInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                faceImage.crossOrigin = "anonymous";  
+                faceImage.src = e.target.result;
+            };
+            reader.readAsDataURL(picInput.files[0]);
+        }
+
+        companyDisplay.textContent = companyInput.value;
+        nameDisplay.textContent = nameInput.value;
+        idDisplay.textContent = idInput.value;
+        jobDisplay.textContent = jobInput.value;
+        idCount++;
+        localStorage.setItem('idCount', idCount);
+        idCountDisplay.textContent = `Business IDs created: ${idCount}`;
+    }
+
+    
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+        html2canvas(document.querySelector("#container2"), {
+        scale: 2  
+    }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'business_id.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        });
+    });
+
+    // Reset local storage and the ID counter
+    document.getElementById('resetBtn').addEventListener('click', function() {
+        localStorage.clear(); 
+        idCount = 0;  
+        idCountDisplay.textContent = `Business IDs created: ${idCount}`;  
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<footer>
+    <p>&copy; 2024 Black Cat Coding. All rights reserved.</p>
+</footer>
+</body>
+</html>
